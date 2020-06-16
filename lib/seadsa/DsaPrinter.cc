@@ -15,6 +15,8 @@
 #include "seadsa/support/Debug.h"
 #include "seadsa/DsaColor.hh"
 
+#include <sstream>
+
 /*
    Convert each DSA graph to .dot file.
  */

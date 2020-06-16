@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <vector>
+#include <set>
 
 namespace llvm {
 class DataLayout;

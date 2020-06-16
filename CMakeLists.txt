@@ -56,8 +56,9 @@ if (TOP_LEVEL)
   include(ExternalProject)
   # if top-level, offer to build llvm
   ExternalProject_Add (llvm
-    SVN_REPOSITORY http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_800/final/
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/ext/llvm
+    GIT_REPOSITORY https://github.com/llvm/llvm-project.git
+    GIT_TAG llvmorg-10.0.0
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/ext/llvm/llvm
     INSTALL_DIR ${CMAKE_BINARY_DIR}/run
     CMAKE_ARGS
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -145,14 +146,16 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to conform to")
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
-add_definitions(-Wno-redeclared-class-member)
-add_definitions(-Wno-sometimes-uninitialized)
-add_definitions(-Wno-deprecated-declarations)
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
-  add_definitions( -Wno-unused-local-typedefs)
-elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-  add_definitions(-Wno-unused-local-typedef)
-  add_definitions(-Wno-inconsistent-missing-override)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_definitions(-Wno-redeclared-class-member)
+  add_definitions(-Wno-sometimes-uninitialized)
+  add_definitions(-Wno-deprecated-declarations)
+  if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+    add_definitions( -Wno-unused-local-typedefs)
+  elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    add_definitions(-Wno-unused-local-typedef)
+    add_definitions(-Wno-inconsistent-missing-override)
+  endif ()
 endif ()
 
 configure_file(include/seadsa/config.h.cmake
